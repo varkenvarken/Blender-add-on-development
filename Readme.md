@@ -38,5 +38,6 @@ If you are familiar with GitHub and git, you can of course choose to clone the r
 
 ## License
 
-All source code in this repository is released under a [GPL license](/LICENSE).
+All *source code* and *documentation* in this repository is released under a [GPL license](/LICENSE).
 
+The logo is (c) 2025 varkenvarken, All rights reserved.
