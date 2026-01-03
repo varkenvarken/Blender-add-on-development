@@ -11,9 +11,9 @@ In order of appearance (click to follow the link to the relevant video, some add
 ## Module: Getting started
 
 - [move_x.py](https://youtu.be/GoOwF0faSsM?si=t7jZo9bkGzfu2hDr)
-- [move_x_menu](https://youtu.be/wyq9lSA9BgQ?si=BIKTe0nRf5PjXbIH)
-- [move_x_poll](https://youtu.be/wyq9lSA9BgQ?si=BIKTe0nRf5PjXbIH)
-- [move_x_property](https://youtu.be/wyq9lSA9BgQ?si=BIKTe0nRf5PjXbIH)
+- [move_x_menu.py](https://youtu.be/wyq9lSA9BgQ?si=BIKTe0nRf5PjXbIH)
+- [move_x_poll.py](https://youtu.be/wyq9lSA9BgQ?si=BIKTe0nRf5PjXbIH)
+- [move_x_property.py](https://youtu.be/wyq9lSA9BgQ?si=BIKTe0nRf5PjXbIH)
 
 ## Module: Adding mesh objects
 
