@@ -17,6 +17,7 @@ class OBJECT_OT_move_x(Operator):
     bl_options = {"REGISTER", "UNDO"}
 
     def execute(self, context):
+        """Move the active object by 1 unit along the x-axis"""
         context.active_object.location.x += 1
         return {"FINISHED"}
 
@@ -27,7 +28,6 @@ from bpy.types import VIEW3D_MT_object
 
 def menu_func(self, context):
     self.layout.operator(OBJECT_OT_move_x.bl_idname)
-
 
 
 def register():

@@ -17,16 +17,19 @@ class OBJECT_OT_move_x(Operator):
     bl_label = "Move X"
     bl_options = {"REGISTER", "UNDO"}
 
+    # an annotated class variable
     amount: FloatProperty(
         name="Amount", description="Amount to move along X axis", default=1.0
     )
 
     def execute(self, context):
+        """Move the active object by a configurable amount along the x-axis"""
         context.active_object.location.x += self.amount
         return {"FINISHED"}
 
     @classmethod
     def poll(cls, context):
+        """Ensure we have an active object and that we are in object mode"""
         return context.active_object is not None and context.mode == "OBJECT"
 
 

@@ -18,7 +18,7 @@ from bpy.props import IntProperty, FloatProperty
 # check for equality to prevent infinite recursion!
 
 def update_outer_radius(self, context):
-    """make sure outer radius >= inner radius"""
+    """make sure outer radius > inner radius"""
     if self.inner_radius > self.outer_radius:
         self.outer_radius = self.inner_radius
 
@@ -60,6 +60,7 @@ class OBJECT_OT_add_star(Operator):
     )
 
     def execute(self, context):
+        """A dummy method"""
         return {"FINISHED"}
 
     @classmethod
@@ -76,15 +77,18 @@ from bpy.types import VIEW3D_MT_add
 
 
 def menu_func(self, context):
+    """Add the star operator to the Add menu."""
     self.layout.operator(OBJECT_OT_add_star.bl_idname)
 
 
 def register():
+    """Register the add-on classes and menu."""
     register_class(OBJECT_OT_add_star)
     VIEW3D_MT_add.append(menu_func)
 
 
 def unregister():
+    """Unregister the add-on classes and menu."""
     VIEW3D_MT_add.remove(menu_func)
     unregister_class(OBJECT_OT_add_star)
 

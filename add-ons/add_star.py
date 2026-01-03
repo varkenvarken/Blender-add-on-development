@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Star",
     "author": "Your Name",
-    "version": (0, 0, 1),
+    "version": (0, 0, 2),
     "blender": (5, 0, 0),
     "location": "Object > Add",
     "description": "Add a star shaped mesh to the scene",
@@ -15,12 +15,13 @@ from bpy.props import IntProperty, FloatProperty
 from bpy_extras.object_utils import object_data_add
 
 # help function to check that that the outer radius is
-# always larger than the inner radius. 
+# always larger than the inner radius.
 # Note that the comparisons are strict, i.e. do NOT
 # check for equality to prevent infinite recursion!
 
+
 def update_outer_radius(self, context):
-    """make sure outer radius >= inner radius"""
+    """make sure outer radius > inner radius"""
     if self.inner_radius > self.outer_radius:
         self.outer_radius = self.inner_radius
 
@@ -62,17 +63,18 @@ class OBJECT_OT_add_star(Operator):
     )
 
     def star_geometry(self):
+        """Calculate and return vertices, edges, and faces for the star mesh."""
         vertices = []
-        angle = 2 * pi / self.points
+        angle = 2 * pi / self.points  # angle between two tips, in radians
         for p in range(self.points):
-            vertices.append(
+            vertices.append(  # tip vertex
                 (
                     self.outer_radius * -sin(p * angle),
                     self.outer_radius * cos(p * angle),
                     0.0,
                 )
             )
-            vertices.append(
+            vertices.append(  # intermediate vertex
                 (
                     self.inner_radius * -sin(p * angle + angle / 2),
                     self.inner_radius * cos(p * angle + angle / 2),
@@ -81,13 +83,16 @@ class OBJECT_OT_add_star(Operator):
             )
         number_of_vertices = len(vertices)
 
+        # edges connecting each vertex to the next one; the modulo assures we wrap around at the end
         edges = [(p, (p + 1) % number_of_vertices) for p in range(number_of_vertices)]
 
+        # a verts form a single face (an NGON)
         faces = [list(range(number_of_vertices))]
 
         return vertices, edges, faces
 
     def execute(self, context):
+        """Create a star mesh from calculated geometry."""
         vertices, edges, faces = self.star_geometry()
         mesh = bpy.data.meshes.new(name="Star")
         mesh.from_pydata(vertices, edges, faces)
@@ -96,6 +101,7 @@ class OBJECT_OT_add_star(Operator):
 
     @classmethod
     def poll(cls, context):
+        """Enable operator only in Object mode."""
         return context.mode == "OBJECT"
 
 
@@ -108,15 +114,18 @@ from bpy.types import VIEW3D_MT_add
 
 
 def menu_func(self, context):
+    """Add the star operator to the Object menu."""
     self.layout.operator(OBJECT_OT_add_star.bl_idname)
 
 
 def register():
+    """Register the add-on classes and menu."""
     register_class(OBJECT_OT_add_star)
     VIEW3D_MT_add.append(menu_func)
 
 
 def unregister():
+    """Unregister the add-on classes and menu."""
     VIEW3D_MT_add.remove(menu_func)
     unregister_class(OBJECT_OT_add_star)
 

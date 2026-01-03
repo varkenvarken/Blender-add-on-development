@@ -18,11 +18,13 @@ class OBJECT_OT_move_x(Operator):
 
 
     def execute(self, context):
+        """Move the active object by 1 unit along the x-axis"""
         context.active_object.location.x += 1
         return {"FINISHED"}
 
     @classmethod
     def poll(cls, context):
+        """Ensure we have an active object and that we are in object mode"""
         return context.active_object is not None and context.mode == "OBJECT"
 
 

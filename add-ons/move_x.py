@@ -16,6 +16,7 @@ class OBJECT_OT_move_x(Operator):
     bl_options = {"REGISTER", "UNDO"}
 
     def execute(self, context):
+        """Move the active object by 1 unit along the x-axis"""
         context.active_object.location.x += 1
         return {"FINISHED"}
 
