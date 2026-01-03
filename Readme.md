@@ -41,3 +41,7 @@ If you are familiar with GitHub and git, you can of course choose to clone the r
 All *source code* and *documentation* in this repository is released under a [GPL license](/LICENSE).
 
 The logo is (c) 2025 varkenvarken, All rights reserved.
+
+## Contributions and suggestions
+
+If you have a suggestion for a topic you´d like to see in the series, create an [issue in this repo](https://github.com/varkenvarken/Blender-add-on-development/issues), or add a comment to one of the videos in [the series](https://youtube.com/playlist?list=PLxyAbGpHucHZs5InOs_9-apX7wBIQtrrJ&si=gWrpdnJ7424x7DqL).
