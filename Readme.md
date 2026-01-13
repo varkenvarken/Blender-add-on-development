@@ -2,7 +2,7 @@
 
 # Blender add-on development for beginners
 
-This is the repository that accompanies [the YouTube video series](https://youtube.com/playlist?list=PLxyAbGpHucHZs5InOs_9-apX7wBIQtrrJ&si=gWrpdnJ7424x7DqL) on writing add-ons for Blender.
+This is the repository that accompanies [the YouTube video series](https://youtube.com/playlist?list=PLxyAbGpHucHZs5InOs_9-apX7wBIQtrrJ&si=kmYMtRvAGMqP9qw0) on writing add-ons for Blender.
 
 It contains [the source code](/add-ons/) for the add-ons that were shown in the videos.
 
