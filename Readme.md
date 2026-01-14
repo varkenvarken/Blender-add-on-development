@@ -10,12 +10,16 @@ In order of appearance (click to follow the link to the relevant video, some add
 
 ## Module: Getting started
 
+Will be published on 14 January, 2026.
+
 - [move_x.py](https://youtu.be/GoOwF0faSsM?si=t7jZo9bkGzfu2hDr)
 - [move_x_menu.py](https://youtu.be/wyq9lSA9BgQ?si=BIKTe0nRf5PjXbIH)
 - [move_x_poll.py](https://youtu.be/wyq9lSA9BgQ?si=BIKTe0nRf5PjXbIH)
 - [move_x_property.py](https://youtu.be/wyq9lSA9BgQ?si=BIKTe0nRf5PjXbIH)
 
 ## Module: Adding mesh objects
+
+Will be published on 21 January and 28 January, 2026.
 
 - [add_star_basic.py](https://youtu.be/ursjdHvtIuo?si=CFAWrvFUJ44CMTlq)
 - [add_star.py](https://youtu.be/ursjdHvtIuo?si=CFAWrvFUJ44CMTlq)
