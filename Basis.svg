@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   width="133.06636mm"
+   height="144.57262mm"
+   viewBox="0 0 133.06636 144.57262"
    version="1.1"
    id="svg1"
    xml:space="preserve"
@@ -32,14 +32,15 @@
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" /><defs
-     id="defs1"><inkscape:perspective
-       sodipodi:type="inkscape:persp3d"
-       inkscape:vp_x="0 : 148.5 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_z="210 : 148.5 : 1"
-       inkscape:persp3d-origin="105 : 99 : 1"
-       id="perspective1098" /><linearGradient
+     inkscape:current-layer="layer1"><inkscape:page
+       x="9.3094509e-21"
+       y="0"
+       width="133.06638"
+       height="144.57262"
+       id="page2"
+       margin="0"
+       bleed="0" /></sodipodi:namedview><defs
+     id="defs1"><linearGradient
        id="linearGradient1095"
        inkscape:collect="always"><stop
          style="stop-color:#bde0f3;stop-opacity:1;"
@@ -141,17 +142,6 @@
        apply_no_weight="true"
        apply_with_weight="true"
        only_selected="false"
-       uniform="false" /><inkscape:path-effect
-       effect="bspline"
-       id="path-effect1087-7"
-       is_visible="true"
-       lpeversion="1.3"
-       weight="33.333333"
-       steps="2"
-       helper_size="0"
-       apply_no_weight="true"
-       apply_with_weight="true"
-       only_selected="false"
        uniform="false" /><radialGradient
        inkscape:collect="always"
        xlink:href="#linearGradient1095"
@@ -163,7 +153,7 @@
        r="45"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1.1732283,0,0,1.1616798,-17.656091,-22.817408)" /><filter
-       style="color-interpolation-filters:sRGB;"
+       style="color-interpolation-filters:sRGB"
        inkscape:label="Drop Shadow"
        id="filter1106"
        x="-0.30274858"
@@ -196,9 +186,10 @@
          id="feComposite1106" /></filter></defs><g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1"><path
+     id="layer1"
+     transform="translate(-38.40943,-67.862717)"><path
        id="path1104"
-       style="fill:#ffffff;fill-opacity:0;stroke:#5fb8eb;stroke-width:1.29325979;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:2.58651957, 2.58651957;stroke-dashoffset:0;stroke-opacity:1"
+       style="fill:#ffffff;fill-opacity:0;stroke:#5fb8eb;stroke-width:1.29326;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:2.58652, 2.58652;stroke-dashoffset:0;stroke-opacity:1"
        inkscape:transform-center-x="1.8920592"
        inkscape:transform-center-y="-3.9586205"
        transform="matrix(0.88746349,-0.10010953,0.10010953,0.88746349,81.119215,109.07448)"
@@ -210,7 +201,7 @@
        cy="141.12715"
        rx="52.795277"
        ry="52.275589" /><path
-       style="fill:#1f5a94;stroke:none;fill-opacity:1;filter:url(#filter1106)"
+       style="fill:#1f5a94;fill-opacity:1;stroke:none;filter:url(#filter1106)"
        d="m 136.67949,202.65401 h 0.26458 c 1.57082,2.73055 3.82231,5.19506 5.7653,7.67292 0.79328,1.01166 1.59061,2.49363 2.74649,3.12742 1.91152,1.04816 5.88047,-2.18798 5.69997,-4.18576 -0.12371,-1.36936 -1.49401,-2.67965 -2.30633,-3.70416 -1.94318,-2.45079 -4.59677,-5.04396 -5.82001,-7.9375 2.42138,-0.66227 4.77225,-1.72264 7.14375,-2.55498 0.71962,-0.25257 2.14502,-0.51657 2.25793,-1.4597 0.19389,-1.61941 -3.77707,-2.99657 -4.90377,-3.62148 -5.63008,-3.12276 -11.33501,-6.11754 -16.93333,-9.29718 -2.09385,-1.18923 -4.19176,-2.43528 -6.35,-3.50308 -0.60172,-0.2977 -1.78006,-1.00846 -2.42575,-0.45423 -0.64911,0.55715 -0.0586,1.98035 0.12208,2.6344 0.70251,2.54266 1.23609,5.12856 1.92681,7.67291 1.63278,6.01462 2.85922,12.1813 4.25334,18.25625 0.2869,1.25017 0.61588,5.57185 2.23365,5.7743 0.98724,0.12353 1.61085,-1.12255 2.04092,-1.80574 1.39947,-2.22309 2.92581,-4.36585 4.28437,-6.61439"
        id="path1"
        sodipodi:nodetypes="ccsssscsscssscssssc" /><path
