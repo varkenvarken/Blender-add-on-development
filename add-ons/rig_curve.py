@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: © 2016 Michel Anders (varkenvarken) & contributors
+#
+# SPDX-License-Identifier: GPL-2.0-or-later 
+
 from typing import Any
 import typing
 import bpy
