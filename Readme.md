@@ -35,7 +35,16 @@ Release date: **4 february 2026**
 ### add-ons / snippet (click to go to relevant video)
 - [skin_armature.py](https://youtu.be/xvwydYy7bII)
 - [change_vertex_radii.py](https://youtu.be/bZWgEG-Xb5k)
-  
+
+## Module: Rigging a curve
+
+Release date: **11 february 2026**
+
+### add-ons (click to go to relevant video)
+- [no relevant snippets, see rig_curve.py](https://youtu.be/uWCpqOgYIdM)
+- [rig_curve.py](https://youtu.be/m4s-m9pTUfw)
+
+
 ## Installing the add-ons
 
 In each module we create several versions of the same addon, each time with the same name,
