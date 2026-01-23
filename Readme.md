@@ -44,6 +44,14 @@ Release date: **11 february 2026**
 - [no relevant snippets, see rig_curve.py](https://youtu.be/uWCpqOgYIdM)
 - [rig_curve.py](https://youtu.be/m4s-m9pTUfw)
 
+## Module: Overlays
+
+Release date: **18 february 2026**
+
+### add-ons / snippet (click to go to relevant video)
+
+- [t.d.b]()
+- [distance_overlay.py]()
 
 ## Installing the add-ons
 
