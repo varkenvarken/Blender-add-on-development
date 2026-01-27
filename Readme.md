@@ -53,7 +53,7 @@ Release date: **11 february 2026**
 - [Intro, no code](https://youtu.be/uWCpqOgYIdM) [**Video: Rigging a curve - Intro**](https://youtu.be/uWCpqOgYIdM)
 - [rig_curve.py](https://youtu.be/m4s-m9pTUfw) [**Video: Rigging a curve - Code**](https://youtu.be/m4s-m9pTUfw)
 
-## Module: Overlays
+## Module: Overlays and preferences
 
 Release date: **18 february 2026**
 
