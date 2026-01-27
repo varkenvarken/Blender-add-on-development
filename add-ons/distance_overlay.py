@@ -15,21 +15,22 @@ from bpy.types import VIEW3D_PT_overlay_object
 bl_info = {
     "name": "Distance overlay",
     "author": "Michel Anders (varkenvarken)",
-    "version": (0, 0, 1),
+    "version": (0, 0, 3),
     "blender": (5, 0, 0),
     "location": "Overlays (Object)",
-    "description": "Draw distances betwee currently selected and active objects",
+    "description": "Draw distances between currently selected and active objects",
     "category": "Overlay",
     "doc_url": "https://github.com/varkenvarken/Blender-add-on-development",
 }
 
-uniform_shader = gpu.shader.from_builtin("UNIFORM_COLOR")
+# UNIFORM_COLOR is deprecated, so use POLYLINE_UNIFORM_COLOR
+uniform_shader = gpu.shader.from_builtin("POLYLINE_UNIFORM_COLOR")
 
 
-def draw_line(p0, p1, color):
+def draw_line(p0, p1, color, width):
     """
     Draw a line from p0 -> p0 in 3d space.
-    
+
     :param p0: Vector
     :param p1: Vector
     :param color: Vector (4 elements, rgba)
@@ -37,14 +38,20 @@ def draw_line(p0, p1, color):
     batch = batch_for_shader(uniform_shader, "LINES", {"pos": [p0, p1]})
     uniform_shader.bind()
     uniform_shader.uniform_float("color", color)
+    uniform_shader.uniform_float("viewportSize", gpu.state.viewport_get()[2:])
+    uniform_shader.uniform_float("lineWidth", width)
     batch.draw(uniform_shader)
 
 
-# this global variable control whether the overlays are shown or not.
+# this global variable controls whether the overlays are shown or not.
 # it it set by toggling the corresponding property in the current Scene
 # (this is not going to work properly with multiple scenes!)
 # We have a separate property because global python variables cannot be
-# accessed from Blender Python directly.
+# accessed from Blender Python directly, i.e. cannot be shown in the GUI.
+# An alternative would be to access this directly via
+# bpy.context.scene.show_distances and although that is arguably better
+# because it doesn´t copy information around, I wanted to illustrate
+# the update callback on a property so I leave it in :-)
 show_distances = False
 
 
@@ -59,7 +66,7 @@ def draw_handler_post_view():
     global show_distances
 
     if show_distances:
-        gpu.state.line_width_set(5)  # OPTION: make this a preference too if you like
+        width = 5  # OPTION: make this a preference too if you like
         line_color = bpy.context.preferences.addons[__name__].preferences.linecolor
         try:
             name = active.name  # will trigger a ReferenceError if removed
@@ -68,14 +75,12 @@ def draw_handler_post_view():
                     try:
                         if ob is not active:
                             draw_line(
-                                active.location, ob.location, line_color
+                                active.location, ob.location, line_color, width
                             )  # the location access will trigger a ReferenceError if removed
                     except ReferenceError:
                         print("target object removed")
         except ReferenceError:
             print("active object removed")
-
-        gpu.state.line_width_set(1)
 
 
 def draw_handler_post_pixel():
@@ -140,12 +145,16 @@ def redraw():
 
 
 class OBJECT_OT_distance_overlay(bpy.types.Operator):
+    """
+    The primary operator of the add-on.
+    
+    It adds the currently selected and active objects to global variables 
+    that the draw handlers can access and set the show_distances property to True.
+    """
     bl_idname = "object.distance_overlay"
     bl_label = "Distance overlay"
-    bl_description = "Add or remove currently selected objects to distance draw list"
+    bl_description = "Add currently selected objects to distance draw list"
     bl_options = {"REGISTER", "UNDO"}
-
-    remove: bpy.props.BoolProperty(name="Remove", default=False)  # type: ignore
 
     @classmethod
     def poll(cls, context):
@@ -158,18 +167,35 @@ class OBJECT_OT_distance_overlay(bpy.types.Operator):
     def execute(self, context):
         global active
         global targets
-        if self.remove:
-            active = None
-            targets = set()
-            context.scene.show_distances = False  # this will also trigger setting the global  show_distances
-        else:
-            active = context.active_object
-            targets = set(context.selected_objects)  # might or might not contain the active object
-            targets.difference_update([context.active_object])  # remove the active object from the targets if it is there
-            context.scene.show_distances = True  # this will also trigger setting the global  show_distances
+
+        active = context.active_object
+        targets = set(context.selected_objects)  # might or might not contain the active object
+        targets.difference_update([context.active_object])  # remove the active object from the targets if it is there
+        context.scene.show_distances = True  # this will also trigger setting the global  show_distances
         redraw()
         return {"FINISHED"}
 
+class OBJECT_OT_distance_overlay_remove(bpy.types.Operator):
+    """
+    Operator to remove objects from the distance draw list.
+    """
+    # we cannot simply add a remove property and set that when adding the OBJECT_OT_distance_overlay 
+    # operator to the overlay panel because of the poll() method that explicitely checks for selected objects
+    # and we want to be able to remove the overlay even if no objects are selected or active.
+    bl_idname = "object.distance_overlay_remove"
+    bl_label = "Remove distance overlay"
+    bl_description = "Renove objects from the distance draw list"
+    bl_options = {"REGISTER", "UNDO"}
+
+    def execute(self, context):
+        global active
+        global targets
+
+        active = None
+        targets = set()
+        context.scene.show_distances = False  # this will also trigger setting the global  show_distances
+        redraw()
+        return {"FINISHED"}
 
 def overlay_options(self, context):
     """Add UI elements to the overlay panel"""
@@ -178,8 +204,8 @@ def overlay_options(self, context):
     row.prop(context.scene, "show_distances")  # see update_show_distances() below
     row.operator(
         OBJECT_OT_distance_overlay.bl_idname, text="Set objects"
-    ).remove = False
-    row.operator(OBJECT_OT_distance_overlay.bl_idname, text="Clear").remove = True
+    )
+    row.operator(OBJECT_OT_distance_overlay_remove.bl_idname, text="Clear")
 
 
 def update_show_distances(self, context):
@@ -233,6 +259,7 @@ def register():
         draw_handler_post_pixel, (), "WINDOW", "POST_PIXEL"
     )
     register_class(OBJECT_OT_distance_overlay)
+    register_class(OBJECT_OT_distance_overlay_remove)
     register_class(DistanceOverlayPreferences)
     VIEW3D_PT_overlay_object.append(overlay_options)
     # custom property. Needs to be added somewhere, View3DOverlay overlay type itself would seem a good a choice
@@ -255,8 +282,10 @@ def unregister():
         bpy.types.SpaceView3D.draw_handler_remove(label_handler, "WINDOW")
     VIEW3D_PT_overlay_object.remove(overlay_options)
     unregister_class(OBJECT_OT_distance_overlay)
+    unregister_class(OBJECT_OT_distance_overlay_remove)
     unregister_class(DistanceOverlayPreferences)
-    # a bit of final cleanup so that when we disable and then disable the whole add-on any remembered state is immediately shown
+    # a bit of final cleanup so that when we disable and then disable the whole add-on any remembered state is not immediately shown
+    # also: in order for Python's garbage collection to work, we must not keep references to objects
     active = None
     targets = set()
     bpy.types.Scene.show_distances = False
