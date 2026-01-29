@@ -6,14 +6,21 @@ from datetime import datetime
 import re
 from smtplib import SMTP_SSL, SMTPException
 from email.message import EmailMessage
+from typing import Literal
 
 import bpy
 from bpy.app.handlers import persistent
 from bpy.utils import register_class, unregister_class
 from bpy_extras.io_utils import ImportHelper
 from bl_ui.utils import PresetPanel
-from bpy.types import Panel, Menu
+from bpy.types import Context, Panel, Menu
 from bl_operators.presets import AddPresetBase
+
+# to prevent having to annotate the return type of every execute method with this rather unreadable chunk
+EXECUTE_RETURN = set[
+    Literal["RUNNING_MODAL", "CANCELLED", "FINISHED", "PASS_THROUGH", "INTERFACE"]
+]
+
 
 bl_info = {
     "name": "Mail when render is done",
@@ -38,7 +45,7 @@ bl_info = {
 # we do NOT store the password in a user preferences property because that would be persisted to disk
 # instead we keep a global variable that we initialize from a file, so when you close Blender
 # it doesn´t linger around. This means we delegate password security to access management on the file system.
-password = None
+password: str | None = None
 
 
 def read_password():
@@ -49,10 +56,11 @@ def read_password():
     manager to indicate whether the password was successfully loaded.
     """
     global password
+    assert bpy.context.preferences is not None  # keep Pylance happy
     password = read_first_line(
-        bpy.context.preferences.addons[__name__].preferences.password_file
+        bpy.context.preferences.addons[__name__].preferences.password_file  # type: ignore (password_file is an attribute)
     )
-    bpy.context.window_manager.password_loaded = password is not None
+    bpy.context.window_manager.password_loaded = password is not None  # type: ignore (password_loaded is an attribute)
 
 
 def read_first_line(filepath: str) -> str | None:
@@ -72,7 +80,7 @@ def read_first_line(filepath: str) -> str | None:
         return None
 
 
-class ReadPasswordFromFile(bpy.types.Operator, ImportHelper):
+class ReadPasswordFromFile(bpy.types.Operator, ImportHelper):  # type: ignore (check() method defined differently in each base class; not something we can fix)
     """
     Lets the user select a file using the standard Blender file dialog
     and sets the password to the first line of this file.
@@ -81,8 +89,9 @@ class ReadPasswordFromFile(bpy.types.Operator, ImportHelper):
     bl_idname = "import.password"
     bl_label = "Read password"
 
-    def execute(self, context):
-        context.preferences.addons[__name__].preferences.password_file = self.filepath
+    def execute(self, context: Context) -> EXECUTE_RETURN:
+        assert context.preferences is not None  # keep Pylance happy
+        context.preferences.addons[__name__].preferences.password_file = self.filepath  # type: ignore (password_file is an attribute as is filepath)
         read_password()
         return {"FINISHED"}
 
@@ -188,15 +197,18 @@ def verify_smtp_connection() -> bool:
     global connection_status
 
     if bpy.app.online_access or bpy.app.online_access_override:
-        prefs = bpy.context.preferences.addons[__name__].preferences
+        assert bpy.context.preferences is not None  # keep Pylance happy
+        prefs: RenderDonePreferences = bpy.context.preferences.addons[
+            __name__
+        ].preferences  # type: ignore
         try:
             with SMTP_SSL(host=prefs.server, port=prefs.port) as smtp:
-                smtp.login(user=prefs.sender, password=password)
+                smtp.login(user=prefs.sender, password=password)  # type: ignore (if password is None login will fail which is perfectly ok)
                 smtp.noop()
                 connection_status = "Connection: ok"
             return True
         except Exception as e:  # not just smtp exceptions also socket.gaierror
-            connection_status = "Connection: error"
+            connection_status = f"Connection: error {str(e)}"
             return False
     else:
         connection_status = "Connection: blocked by user (see prefs|system|network)"
@@ -218,7 +230,9 @@ def send_smtp_message(content: str) -> bool:
     """
     global password
     global connection_status
-    prefs = bpy.context.preferences.addons[__name__].preferences
+
+    assert bpy.context.preferences is not None  # keep Pylance happy
+    prefs: RenderDonePreferences = bpy.context.preferences.addons[__name__].preferences  # type: ignore
 
     msg = EmailMessage()
     msg.set_content(content)
@@ -228,13 +242,13 @@ def send_smtp_message(content: str) -> bool:
 
     try:
         with SMTP_SSL(host=prefs.server, port=prefs.port) as smtp:
-            smtp.login(user=prefs.sender, password=password)
+            smtp.login(user=prefs.sender, password=password)  # type: ignore (if password is None login will fail which is perfectly ok)
             smtp.send_message(msg)
             smtp.quit()
             connection_status = "Connection: message sent"
         return True
     except (SMTPException, RuntimeError) as e:
-        connection_status = "Connection: error"
+        connection_status = f"Connection: error {str(e)}"
         return False
 
 
@@ -242,7 +256,7 @@ class VerifyServer(bpy.types.Operator):
     bl_idname = "workspace.verify_server"
     bl_label = "Verify SMTP server"
 
-    def execute(self, context):
+    def execute(self, context: Context) -> EXECUTE_RETURN:
         if verify_smtp_connection():
             self.report({"INFO"}, "SMTP server connection ok")
         else:
@@ -280,6 +294,7 @@ PRESET_SUBDIR = f"addons/{__name__}"
 # Well, the _PT_ idea clearly identifies it as a Panel type, but the ALL_CAPS prefix is
 # just plain ugly imho)
 
+
 # this panel will be embedded in our preferences
 # it doesn't contain any layour for the header or body,
 # that is something that will be filled in by the draw()
@@ -294,14 +309,15 @@ class RENDERDONE_PT_presets(PresetPanel, Panel):
 
 # NOTE: my remarks about name conventions for panels hold for menus too...
 
-# this menu will be shown in the panel header we will draw as part of 
+
+# this menu will be shown in the panel header we will draw as part of
 # the preferences.
 class RENDERDONE_MT_presets(Menu):
     bl_idname = "RENDERDONE_MT_presets"
     bl_label = "Mailing presets"
     preset_subdir = PRESET_SUBDIR
     preset_operator = "script.execute_preset"  # refers to the built-in operator that will load the chosen preset
-    draw = Menu.draw_preset
+    draw = Menu.draw_preset  # TODO: investigate type warning
 
     # this is undocumented, but it works. If this static method is present
     # it will be called after the preset is selected and executed, which
@@ -309,17 +325,20 @@ class RENDERDONE_MT_presets(Menu):
     # (from the filename that is one of the saved properties)
     @staticmethod
     def post_cb(context, filepath):
+        assert bpy.context.preferences is not None
         bpy.context.preferences.addons[
             __name__
-        ].preferences.last_selected_preset = RENDERDONE_MT_presets.bl_label
+        ].preferences.last_selected_preset = RENDERDONE_MT_presets.bl_label  # type:ignore (last_selected_preset is a known attribute)
         read_password()
 
+
 # NOTE: operator naming conventions are less strict and will not result in a warning whatever you call it
+
 
 # this operator is responsible for creating a new preset.
 # all the hard work is already implemented in the AddPresetBase mixin (which must be first in the base classes)
 # all we have to do is define which properties to save and where to find those
-class RenderDone_OT_AddMyPreset(AddPresetBase, bpy.types.Operator):
+class RenderDone_OT_AddMyPreset(AddPresetBase, bpy.types.Operator):  # type: ignore (base classes define execute methods differently; not something we can fix)
     bl_idname = "renderdone.add_preset"
     bl_label = "Add or remove a preset"
     preset_menu = "RENDERDONE_MT_presets"
@@ -383,7 +402,7 @@ class RenderDonePreferences(bpy.types.AddonPreferences):
         max=65535,
         update=reset_status,
     )  # type: ignore
-    # don´t make these next two read only, otherwise we cannot even set them programmatically; 
+    # don´t make these next two read only, otherwise we cannot even set them programmatically;
     # make them read only in the draw method (or don´t even show them)
     password_file: bpy.props.StringProperty(
         name="Password file",
@@ -449,9 +468,9 @@ class RenderDonePreferences(bpy.types.AddonPreferences):
             server_row.prop(self, "port", text="")
 
         # The connection status is always shown, regardless whether we see the properties or not
-        status_row = layout.row()
-        status_row.label(text=connection_status)
-        status_row.operator(VerifyServer.bl_idname)
+        status_col = layout.column()
+        status_col.label(text=connection_status)
+        status_col.operator(VerifyServer.bl_idname)
 
 
 # endregion
@@ -477,7 +496,7 @@ def register():
     # registering will not load the user preferences yet apparently
     for klass in classes:
         register_class(klass)
-    bpy.types.WindowManager.password_loaded = bpy.props.BoolProperty(
+    bpy.types.WindowManager.password_loaded = bpy.props.BoolProperty(  # type: ignore (we can define a new attribute dynamically no problem)
         name="Password loaded", default=False
     )
     read_password()
