@@ -196,7 +196,7 @@ def verify_smtp_connection() -> bool:
     global password
     global connection_status
 
-    if bpy.app.online_access or bpy.app.online_access_override:
+    if bpy.app.online_access:  # or bpy.app.online_access_override  not needed, override indicates when overridden, that'all
         assert bpy.context.preferences is not None  # keep Pylance happy
         prefs: RenderDonePreferences = bpy.context.preferences.addons[
             __name__
@@ -241,12 +241,16 @@ def send_smtp_message(content: str) -> bool:
     msg["To"] = prefs.email
 
     try:
-        with SMTP_SSL(host=prefs.server, port=prefs.port) as smtp:
-            smtp.login(user=prefs.sender, password=password)  # type: ignore (if password is None login will fail which is perfectly ok)
-            smtp.send_message(msg)
-            smtp.quit()
-            connection_status = "Connection: message sent"
-        return True
+        if bpy.app.online_access:
+            with SMTP_SSL(host=prefs.server, port=prefs.port) as smtp:
+                smtp.login(user=prefs.sender, password=password)  # type: ignore (if password is None login will fail which is perfectly ok)
+                smtp.send_message(msg)
+                smtp.quit()
+                connection_status = "Connection: message sent"
+            return True
+        else:
+            connection_status = "Connection: blocked by user (see prefs|system|network)"
+            return False
     except (SMTPException, RuntimeError) as e:
         connection_status = f"Connection: error {str(e)}"
         return False
