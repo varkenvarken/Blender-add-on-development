@@ -65,6 +65,18 @@ Release date: **18 february 2026**
 - [user preferences in distance_overlay.py](https://youtu.be/F8DhKTWXl8w) [**Video: Overlays and preferences - User preferences**](https://youtu.be/F8DhKTWXl8w)
 - [tip to improve distance_overlay.py](https://youtu.be/EUpGNfuUtH8) [**Video: Overlays and preferences - Tips**](https://youtu.be/EUpGNfuUtH8)
   
+## Module: App handlers and presets
+
+Release date: **25 february 2026**
+
+### add-ons / snippet (click to go to relevant video)
+
+- [app_handers.py](https://youtu.be/x9DFL2Xm6Vc) [**Video: App handlers and presets - App handlers**](https://youtu.be/x9DFL2Xm6Vc)
+- [mail_something_plain_password.py](https://youtu.be/5eD5jsjXvDw) [**Video: App handlers and presets - Preferences**](https://youtu.be/5eD5jsjXvDw)
+- [mail_something.py](https://youtu.be/A6dPKQCmwrw) [**Video: App handlers and presets - Sending email**](https://youtu.be/A6dPKQCmwrw)
+- [render_done.py](https://youtu.be/vVLlCtpJcbw) [**Video: App handlers and presets - Completing the add-on**](https://youtu.be/vVLlCtpJcbw)
+- [render_done.py](https://youtu.be/P7DRHRADCCE) [**Video: App handlers and presets - Presets**](https://youtu.be/P7DRHRADCCE)
+  
 ## Installing the add-ons
 
 In each module we create several versions of the same addon, each time with the same name,
