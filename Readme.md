@@ -7,6 +7,8 @@ This is the repository that accompanies [the YouTube video series](https://youtu
 It contains [the source code](/add-ons/) for the add-ons that were shown in the videos, as well as for someof the [snippets](/snippets/)
 that are shown in some of the videos.
 
+Add-ons that require multiple files and need to be distributed as a .zip file are each in their own folder. Currently that is just one addon, [render_done](./render_done/), which is a refactored version from the [single file version](add-ons/render_done.py). For instructions on how to create a .zip file you can distribute, see [Installing the add-ons](#installing-the-add-ons)
+
 **Table of contents**
 - [Videos](#videos)
   - [Introduction video \[Released: **14 january 2026**\]](#introduction-video-released-14-january-2026)
@@ -16,7 +18,9 @@ that are shown in some of the videos.
   - [Module: Rigging a curve \[Release date: **11 february 2026**\]](#module-rigging-a-curve-release-date-11-february-2026)
   - [Module: Overlays and preferences \[Release date: **18 february 2026**\]](#module-overlays-and-preferences-release-date-18-february-2026)
   - [Module: App handlers and presets \[Release date: **25 february 2026**\]](#module-app-handlers-and-presets-release-date-25-february-2026)
+  - [Module: Multi file add-ons \[Release date: **4 march 2026**\]](#module-multi-file-add-ons-release-date-4-march-2026)
 - [Installing the add-ons](#installing-the-add-ons)
+  - [Multi file add-ons](#multi-file-add-ons)
 - [Notes and issues](#notes-and-issues)
 - [License](#license)
 - [Contributions and suggestions](#contributions-and-suggestions)
@@ -95,7 +99,14 @@ In order of appearance (click to follow the link to the relevant video, some add
 - [mail_something.py](https://youtu.be/A6dPKQCmwrw) [**Video: App handlers and presets - Sending email**](https://youtu.be/A6dPKQCmwrw)
 - [render_done.py](https://youtu.be/vVLlCtpJcbw) [**Video: App handlers and presets - Completing the add-on**](https://youtu.be/vVLlCtpJcbw)
 - [render_done.py](https://youtu.be/P7DRHRADCCE) [**Video: App handlers and presets - Presets**](https://youtu.be/P7DRHRADCCE)
-  
+
+### Module: Multi file add-ons [Release date: **4 march 2026**]
+
+(click to go to relevant video)
+
+- t.b.d.
+
+
 ## Installing the add-ons
 
 In each module we create several versions of the same addon, each time with the same name,
@@ -109,6 +120,19 @@ If you are unfamiliar with GitHub, you can either click on the green `Code` butt
 download one of them by clicking on it and then selecting `Download raw file` (upper right).
 
 If you are familiar with GitHub and git, you can of course choose to clone the repository instead.
+
+### Multi file add-ons
+
+Some add-ons, for example the refactored version of [render_done](./render_done/) contain multiple files. Such a *package* needs to be distributed as a .zip file.
+
+You can create such a zip file from the command line with:
+
+```bash
+zip -ur render_done.zip render_done
+```
+
+In Windows you can also go to the folder in the file explorer and select all files and any subfolders and then right-click -> Add to compressed archive (or similar). Make sure *not* to include the top level folder itself. The .zip file can then be installed like any other add-on.
+
 
 > [!NOTE]  
 > The repository only contains the final version shown in the videos, but often enhanced with extra comments.
