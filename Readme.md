@@ -104,7 +104,8 @@ In order of appearance (click to follow the link to the relevant video, some add
 
 (click to go to relevant video)
 
-- t.b.d.
+- [render_done/](https://youtu.be/uEHAJVvp13w) [**Video: A multi-file package**](https://youtu.be/uEHAJVvp13w)
+- [render_done/](https://youtu.be/jqyxPnwICzI) [**Video: Custom icons**](https://youtu.be/jqyxPnwICzI)
 
 
 ## Installing the add-ons
@@ -128,10 +129,10 @@ Some add-ons, for example the refactored version of [render_done](./render_done/
 You can create such a zip file from the command line with:
 
 ```bash
-zip -ur render_done.zip render_done
+zip -r render_done.zip render_done
 ```
 
-In Windows you can also go to the folder in the file explorer and select all files and any subfolders and then right-click -> Add to compressed archive (or similar). Make sure *not* to include the top level folder itself. The .zip file can then be installed like any other add-on.
+In Windows (or a graphical file browser on your OS of choice, like Dolphin) you can also go to the folder in the file explorer and select all files and any subfolders and then right-click -> Add to compressed archive (or similar). Make sure *not* to include the top level folder itself. The .zip file can then be installed like any other add-on.
 
 
 > [!NOTE]  
@@ -148,7 +149,7 @@ When an operator has been registered it will probably not appear right away at t
 
 All *source code* and *documentation* in this repository is released under a [GPL license](/LICENSE).
 
-The logo is (c) 2025 varkenvarken, All rights reserved.
+The logo is (c) 2025, 2026 varkenvarken, All rights reserved.
 
 ## Contributions and suggestions
 
