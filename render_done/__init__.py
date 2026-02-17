@@ -35,8 +35,6 @@ classes = (
 
 def register():
     load_icons()
-    print(f"REGISTER {id(preview_collections)=}")
-    print(f"register: {preview_collections.keys()=}")
     bpy.app.handlers.render_init.append(render_init_handler)
     bpy.app.handlers.render_complete.append(render_complete_handler)
     bpy.app.handlers.render_cancel.append(render_cancel_handler)
